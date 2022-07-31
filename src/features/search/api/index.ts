@@ -1,6 +1,18 @@
-// A mock function to mimic making an async request for data
-export function fetchCount(amount = 1) {
-  return new Promise<{ data: number }>((resolve) =>
-    setTimeout(() => resolve({ data: amount }), 500)
-  );
+import { config } from "../../../config";
+
+export async function itunesMusicSearch(
+  term: string,
+  limit: number,
+  country: string
+) {
+  const query = new URLSearchParams({
+    term,
+    limit: String(limit),
+    country,
+    media: "music",
+  }).toString();
+
+  const response = await fetch(`${config.baseApiUrl}/search?${query}`);
+
+  return await response.json();
 }
