@@ -1,1 +1,5 @@
-export type LoadingStatus = 'idle' | 'loading' | 'failed';
+export enum LoadingStatus {
+    IDLE = "idle",
+    LOADING = "loading",
+    FAILED = "failed"
+};

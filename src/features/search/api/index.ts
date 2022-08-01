@@ -1,10 +1,15 @@
 import { config } from "../../../config";
+import { SearchResponsePayload } from "./types";
 
-export async function itunesMusicSearch(
-  term: string,
-  limit: number,
-  country: string
-) {
+export async function searchApi({
+  term,
+  limit,
+  country,
+}: {
+  term: string;
+  limit: number;
+  country: string;
+}) {
   const query = new URLSearchParams({
     term,
     limit: String(limit),
@@ -14,5 +19,5 @@ export async function itunesMusicSearch(
 
   const response = await fetch(`${config.baseApiUrl}/search?${query}`);
 
-  return await response.json();
+  return (await response.json()) as { data: SearchResponsePayload };
 }
