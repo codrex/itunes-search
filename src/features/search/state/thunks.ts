@@ -9,7 +9,7 @@ export const musicSearch = createAsyncThunk(
     'search/music-search',
     async (searchParams: SearchApiParams[0]) => {
       const response = await searchApi(searchParams);
-      return response.data;
+      return response;
     }
   );
 

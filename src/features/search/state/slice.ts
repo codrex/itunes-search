@@ -9,6 +9,7 @@ const initialState: InitialState = {
   musicSearch: [] as unknown as InitialState["musicSearch"],
   status: LoadingStatus.IDLE,
 };
+console.log(musicSearch.fulfilled, "========");
 
 export const searchSlice = createSlice({
   name: "search",

@@ -19,5 +19,5 @@ export async function searchApi({
 
   const response = await fetch(`${config.baseApiUrl}/search?${query}`);
 
-  return (await response.json()) as { data: SearchResponsePayload };
+  return (await response.json()) as SearchResponsePayload;
 }

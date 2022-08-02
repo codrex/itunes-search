@@ -7,7 +7,7 @@ type Option = {
   label: string;
 };
 
-interface SelectProps
+export interface SelectProps
   extends Omit<AutocompleteProps<Option, false, true, false>, "options" | "renderInput"> {
   options: Option[];
   label?: string;

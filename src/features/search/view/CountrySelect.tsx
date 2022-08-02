@@ -2,9 +2,8 @@ import React from "react";
 import Box, { BoxProps } from "@mui/material/Box";
 import styled from "styled-components";
 
-import { Select } from "../../../components/Select";
+import { Select, SelectProps } from "../../../components/Select";
 import { useCountryToCodeOptions } from "../../../hooks/useCountryToCodeOptions";
-import { codesToCountry } from "../../../constants/countries";
 
 
 const OptionStyled = styled(Box)<
@@ -27,18 +26,17 @@ const SelectStyled = styled(Select)`
   }
 `;
 
-const DEFAULT_OPTION = {
-  label: codesToCountry.US,
-  value: "US"
-}
+ export type CountrySelectProps = Pick<SelectProps, "onChange" | "defaultValue"> 
 
-export function CountrySelect() {
+
+export function CountrySelect({onChange, defaultValue}: CountrySelectProps) {
   const countries = useCountryToCodeOptions();
 
   return (
     <SelectStyled
-      defaultValue={DEFAULT_OPTION}
+      defaultValue={defaultValue}
       options={countries}
+      onChange={onChange}
       renderOption={(props: any, option) => (
         <OptionStyled component="li" {...props}>
           <img

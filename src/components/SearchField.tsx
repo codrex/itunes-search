@@ -6,7 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import styled from "styled-components";
 
-interface SearchFieldProps extends PaperProps {
+export interface SearchFieldProps extends PaperProps {
   inputProps?: InputBaseProps["inputProps"];
   children?: React.ReactNode;
 }
