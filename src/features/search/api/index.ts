@@ -5,10 +5,12 @@ export async function searchApi({
   term,
   limit,
   country,
+  offset = 0
 }: {
   term: string;
   limit: number;
   country: string;
+  offset?: number
 }) {
   const query = new URLSearchParams({
     term,
@@ -16,6 +18,7 @@ export async function searchApi({
     country,
     media: "music",
     entity: "musicArtist, album, song",
+    offset: String(offset)
   }).toString();
 
   const response = await fetch(`${config.baseApiUrl}/search?${query}`);

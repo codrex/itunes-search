@@ -4,15 +4,17 @@ import Box from "@mui/material/Box";
 import { FixedSizeGrid, GridChildComponentProps } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
 import AutoReSizer from "react-virtualized-auto-sizer";
+import debounce from "lodash.debounce"
 
 import { SearchField, SearchFieldProps } from "../../../components/SearchField";
 import { codesToCountry } from "../../../constants/countries";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { musicSearch } from "../state/thunks";
-import { selectMusicSearch } from "../state/selectors";
+import { musicSearch, musicSearchLoadMore } from "../state/thunks";
+import { selectMusicSearch, selectIsLoading, selectHasNextPage } from "../state/selectors";
 import { useGridData } from "../hooks/useGridData";
 import { CountrySelect, CountrySelectProps } from "./CountrySelect";
 import { SearchCard, SearchCardProps } from "./SearchCard";
+
 
 const MusicSearchStyled = styled(Box)``;
 const CellStyled = styled.div`
@@ -20,10 +22,9 @@ const CellStyled = styled.div`
 `;
 
 const CellContainerStyled = styled(Box)`
-  margin:  0 auto;
+  margin: 0 auto;
   position: relative;
 `;
-
 
 const SearchFieldStyled = styled(SearchField)`
   max-width: 800px;
@@ -49,10 +50,14 @@ function Cell(props: GridChildComponentProps<SearchCardProps[][]>) {
 
 export function MusicSearch() {
   const dispatch = useAppDispatch();
+  const searchResults = useAppSelector(selectMusicSearch);
+  const isLoading = useAppSelector(selectIsLoading);
+  const hasNextPage: boolean = useAppSelector(selectHasNextPage);
+
+
   const [formState, setFormState] = useState({
     country: DEFAULT_OPTION.value,
     term: "",
-    limit: 10,
   });
 
   const handleCountryChange: CountrySelectProps["onChange"] = (
@@ -74,6 +79,13 @@ export function MusicSearch() {
     event.preventDefault();
     dispatch(musicSearch(formState));
   };
+
+  const loadMore = debounce((_: number, stopIndex:number) => new Promise((resolve) => {
+    if(!searchResults[stopIndex]) {
+      dispatch(musicSearchLoadMore({...formState, cb: resolve}));
+    }
+  })
+, 1000)
 
   return (
     <MusicSearchStyled display="flex" flexDirection="column" height="100vh">
@@ -103,41 +115,59 @@ export function MusicSearch() {
         </form>
       </Box>
       <Box width="100%" height="auto" flex="1">
-        {/* <InfiniteLoader
-          isItemLoaded={() => true}
-          itemCount={9000}
-          loadMoreItems={() => undefined}
-        >
-          {({ onItemsRendered, ref }) => ( */}
-        <AutoReSizer>{(props) => <Grid {...props} />}</AutoReSizer>
-        {/* )} */}
-        {/* </InfiniteLoader> */}
+        <AutoReSizer>
+          {(props) => (
+            <InfiniteLoader
+              isItemLoaded={() => !hasNextPage && !isLoading}
+              itemCount={searchResults.length + 1}
+              loadMoreItems={loadMore as any}
+              threshold={7}
+            >
+              {({ onItemsRendered, ref }) => (
+                <Grid {...props} ref={ref} onItemsRendered={onItemsRendered} />
+              )}
+            </InfiniteLoader>
+          )}
+        </AutoReSizer>
       </Box>
     </MusicSearchStyled>
   );
 }
 
-function Grid({ height, width }: any) {
-  const searchResults = useAppSelector(selectMusicSearch);
-  const columnWidth = 350 > width ? width : 350;
-  const columnCount = Math.floor(width / columnWidth);
-
-  const gridData = useGridData(searchResults, columnCount);
-  console.log(columnCount, gridData);
-  return (
-    <FixedSizeGrid<SearchCardProps[][]>
-      // ref={ref}
-      // onItemsRendered={onItemsRendered}
-      columnCount={columnCount}
-      columnWidth={columnWidth}
-      height={height}
-      rowCount={gridData.length}
-      rowHeight={300}
-      width={width}
-      itemData={gridData as SearchCardProps[][]}
-      innerElementType={CellContainerStyled}
-    >
-      {Cell}
-    </FixedSizeGrid>
-  );
+interface GridProps {
+  height: number;
+  width: number;
+  onItemsRendered: (props: any) => any;
 }
+
+const Grid = React.forwardRef<HTMLElement, GridProps>(
+  ({ height, width, onItemsRendered }, ref) => {
+    const searchResults = useAppSelector(selectMusicSearch);
+    const maxColumnWidth = 350;
+    const columnWidth = maxColumnWidth > width ? width : maxColumnWidth;
+    const columnCount = Math.floor(width / columnWidth);
+    const gridData = useGridData(searchResults, columnCount);
+
+    return (
+      <FixedSizeGrid<SearchCardProps[][]>
+        innerRef={ref}
+        onItemsRendered={gridProps => {
+          onItemsRendered({
+            visibleStartIndex: gridProps.visibleRowStartIndex * columnCount,
+            visibleStopIndex: gridProps.visibleRowStopIndex * columnCount
+          });
+        }}
+        columnCount={columnCount}
+        columnWidth={columnWidth}
+        height={height}
+        rowCount={gridData.length}
+        rowHeight={300}
+        width={width}
+        itemData={gridData as SearchCardProps[][]}
+        innerElementType={CellContainerStyled}
+      >
+        {Cell}
+      </FixedSizeGrid>
+    );
+  }
+);

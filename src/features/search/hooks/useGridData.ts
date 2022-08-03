@@ -10,7 +10,7 @@ export const useGridData = (payload: SearchResponsePayload["results"], width: nu
         if(!payload.length) return [];
 
         const height =Math.round( payload.length / width)
-      return generateToDimensionalArray<formatMusicSearchReturnType>(height, width, (index) => {
+      return generateToDimensionalArray<formatMusicSearchReturnType>(height, width, payload.length, (index) => {
         return formatMusicSearch(payload[index])
       })
 
@@ -18,12 +18,16 @@ export const useGridData = (payload: SearchResponsePayload["results"], width: nu
     },[payload, width])
 }
 
-function generateToDimensionalArray<T> (height: number, width: number, getGridData: (index:number) => T ) {
+
+
+function generateToDimensionalArray<T> (height: number, width: number, length: number, getGridData: (index:number) => T ) {
     const grid: T[][] = []
-    for(let h = 0; h < height; h++){
+    for(let h = 0; h <= height; h++){
         for(let w = 0; w < width; w++){
             const index = (h * width) + w
-            if(index > height + width) break;
+
+            if(index > length - 1) break;
+
             const gridData = getGridData(index);
             if(!grid[h]) {
                 grid[h] = []
