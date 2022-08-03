@@ -1,5 +1,5 @@
 import { config } from "../../../config";
-import { SearchResponsePayload } from "./types";
+import { SearchResponsePayload } from "../../types";
 
 export async function searchApi({
   term,
@@ -15,6 +15,7 @@ export async function searchApi({
     limit: String(limit),
     country,
     media: "music",
+    entity: "musicArtist, album, song",
   }).toString();
 
   const response = await fetch(`${config.baseApiUrl}/search?${query}`);

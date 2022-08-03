@@ -1,15 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { LoadingStatus } from "../../types";
 import { InitialState } from "./types";
 import { musicSearch } from "./thunks";
-import { LoadingStatus } from "../../types";
 
 
 const initialState: InitialState = {
   musicSearch: [] as unknown as InitialState["musicSearch"],
   status: LoadingStatus.IDLE,
 };
-console.log(musicSearch.fulfilled, "========");
 
 export const searchSlice = createSlice({
   name: "search",
