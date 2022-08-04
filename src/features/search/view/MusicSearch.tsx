@@ -68,13 +68,13 @@ export function MusicSearch() {
       debounce(
         (_: number, stopIndex: number) =>
           new Promise((resolve) => {
-            if (!searchResults[stopIndex]) {
+            if (!searchResults[stopIndex] && !isLoading) {
               dispatch(musicSearchLoadMore({ ...formState, cb: resolve }));
             }
           }),
         500
       ),
-    [searchResults, formState, dispatch]
+    [searchResults, formState, dispatch, isLoading]
   );
 
   const notFound = !searchResults.length  && !isLoading;

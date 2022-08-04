@@ -43,7 +43,7 @@ export const Grid = React.forwardRef<HTMLElement, GridProps>(
     const columnWidth = maxColumnWidth > width ? width : maxColumnWidth;
     const columnCount = Math.floor(width / columnWidth);
     let gridData: ReturnType<typeof useGridData> = [];
-    gridData = useGridData(searchResults, columnCount, gridData);
+    gridData = useGridData(searchResults, columnCount);
 
     const HandleItemsRendered = useCallback(
       (gridProps: any) => {

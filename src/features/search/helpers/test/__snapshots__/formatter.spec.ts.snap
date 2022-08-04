@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`formatter should format artist data type 1`] = `
+Object {
+  "genre": "",
+  "id": "artist id",
+  "image": "https://ui-avatars.com/api/?size=300&name=&background=random",
+  "name": "",
+  "type": "",
+}
+`;
+
+exports[`formatter should format collection data type 1`] = `
+Object {
+  "genre": "",
+  "id": "collection id",
+  "image": "",
+  "name": "",
+  "type": "",
+}
+`;
+
+exports[`formatter should format track data type 1`] = `
+Object {
+  "genre": "",
+  "id": "track id",
+  "image": "",
+  "name": "",
+  "type": "",
+}
+`;
