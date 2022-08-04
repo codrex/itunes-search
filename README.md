@@ -1,6 +1,7 @@
-#  Interview task
+#  Itunes search
 
 A react app that queries the itunes api for music records
+<img width="1728" alt="Screen Shot 2022-08-04 at 9 24 31 PM" src="https://user-images.githubusercontent.com/27497967/182946541-f2a69fc5-0828-421b-b292-f7a3904d046f.png">
 
 
 ## Requirements
