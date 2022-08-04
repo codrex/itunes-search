@@ -1,6 +1,8 @@
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete, { AutocompleteProps } from "@mui/material/Autocomplete";
+import {InputBaseProps} from "@mui/material/InputBase";
+
 
 type Option = {
   value: string;
@@ -11,10 +13,11 @@ export interface SelectProps
   extends Omit<AutocompleteProps<Option, false, true, false>, "options" | "renderInput"> {
   options: Option[];
   label?: string;
+  inputProps?: InputBaseProps["inputProps"]
 }
 
 export function Select(props: SelectProps) {
-  const { options, label, ...rest } = props;
+  const { options, label,inputProps, ...rest } = props;
   return (
     <Autocomplete
       options={options}
@@ -28,6 +31,7 @@ export function Select(props: SelectProps) {
           autoFocus
           label={label}
           inputProps={{
+            ...inputProps,
             ...params.inputProps,
           }}
         />

@@ -18,7 +18,7 @@ const OptionStyled = styled(Box)<
 `;
 
 const SelectStyled = styled(Select)`
-  min-width: 180px; 
+  min-width: 150px; 
   width: 30%;
 
   & fieldset {
@@ -37,6 +37,9 @@ export function CountrySelect({onChange, defaultValue}: CountrySelectProps) {
       defaultValue={defaultValue}
       options={countries}
       onChange={onChange}
+      inputProps={{
+        "aria-label":"country selection field"
+      }}
       renderOption={(props: any, option) => (
         <OptionStyled component="li" {...props}>
           <img

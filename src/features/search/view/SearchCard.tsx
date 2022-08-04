@@ -21,11 +21,22 @@ export interface SearchCardProps {
 export function SearchCard(props: SearchCardProps) {
   const { image, type, name, genre } = props;
   return (
-    <CardStyled>
-      <CardActionArea>
-       {image && <CardMedia component="img" height="140" image={image} alt={name} />}
+    <CardStyled elevation={1} >
+        {image && (
+          <CardMedia component="img" height="140" image={image} alt={name} />
+        )}
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="h5"
+            sx={{
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+            overflow="hidden"
+          >
             {name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
@@ -35,7 +46,6 @@ export function SearchCard(props: SearchCardProps) {
             {genre}
           </Typography>
         </CardContent>
-      </CardActionArea>
     </CardStyled>
   );
 }

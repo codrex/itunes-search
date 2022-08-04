@@ -23,7 +23,7 @@ export const formatMusicSearch = (
     case "artist":
       return {
         id: artistId,
-        image: `https://ui-avatars.com/api/?size=300&name=${artistName}`,
+        image: `https://ui-avatars.com/api/?size=300&name=${artistName}&background=random`,
         type: artistType,
         name: artistName,
         genre: primaryGenreName,
@@ -31,7 +31,7 @@ export const formatMusicSearch = (
     case "collection":
       return {
         id: collectionId,
-        image: artworkUrl100,
+        image: artworkUrl100?.replace("100x100","500x500"),
         type: collectionType,
         name: collectionName,
         genre: primaryGenreName,
@@ -39,7 +39,7 @@ export const formatMusicSearch = (
     case "track":
       return {
         id: trackId,
-        image: artworkUrl100,
+        image: artworkUrl100?.replace("100x100","500x500"),
         type: kind,
         name: trackName,
         genre: primaryGenreName,

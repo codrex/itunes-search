@@ -21,6 +21,7 @@ export const searchSlice = createSlice({
     builder
       .addCase(musicSearch.pending, (state) => {
         state.status = LoadingStatus.LOADING;
+        state.musicSearch =  [] as unknown as InitialState["musicSearch"];
       })
       .addCase(musicSearch.fulfilled, (state, action) => {
         state.status = LoadingStatus.IDLE;
